@@ -1,10 +1,15 @@
 public class BottleX {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Bottle[] bottles = new Bottle[33];
+        double j = 2.5;
         for (int i = 0; i < bottles.length; i++) {
-            for (double j = 2.5 ;j < 200; j++)
             bottles[i] = new Bottle(j);
+            j += 2.5;
+
         }
+        System.out.println(bottles[0].getBottleCapacity());
+        System.out.println(bottles[1].getBottleCapacity());
+        System.out.println(bottles[32].getBottleCapacity());
 
         bottles[0].pour(2.5);
         bottles[1].pour(3);
@@ -12,8 +17,7 @@ public class BottleX {
         System.out.println(bottles[1].getCurrentState());
         System.out.println(bottles[0].getCurrentState());
 
-       /* for (int i = 0; i < bottles.length; i++){
-            Bottle[i] bottles = new Bottle[];*/
+
     }
 }
 
@@ -21,12 +25,15 @@ class Bottle {
     double bottleCapacity;
     //int bottleNumber;
     private double currentState;
+
     Bottle(double bottleCapacity) {
         this.bottleCapacity = bottleCapacity;
     }
+
     double getBottleCapacity() {
         return bottleCapacity;
     }
+
     double getCurrentState() {
         return currentState;
     }
@@ -39,15 +46,22 @@ class Bottle {
             return 0;
 
     }
-    double pourOut(double howManyLiteres) {
-        if (this.currentState >= bottleCapacity) {
-            this.currentState -= bottleCapacity;
-            return bottleCapacity;
-        } else
-            return 0;
+
+    boolean pourOut(double howManyLiteres) {
+        if (this.currentState >= howManyLiteres) {
+            this.currentState -= howManyLiteres;
+            return true;
+        } else {
+            this.currentState = 0;
+            return false;
+        }
     }
+
     void transfer(double howManyLiteres, Bottle whereToTranfser) {
-        this.pourOut(bottleCapacity);
-        whereToTranfser.pour(bottleCapacity);
+        if (howManyLiteres <= currentState) {
+            this.pourOut(howManyLiteres);
+        } else
+            this.pourOut(currentState);
+        whereToTranfser.pour(howManyLiteres);
     }
 }
